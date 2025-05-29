@@ -8,6 +8,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../Frontend')));
+app.use('/styles', express.static(path.join(__dirname, '../styles')));
 
 // Rota para inserir venda
 app.post('/api/vendas', (req, res) => {

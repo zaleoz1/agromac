@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css --watch",
     "build": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css",
-    "start": "node Backend/server.js"
+    "start": "node Backend/server.js",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "",
