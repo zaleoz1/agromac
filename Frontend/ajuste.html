@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuste de Vendas</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+     <link rel="stylesheet" href="../styles/output.css">
+    <script src="../Frontend/script1.js" defer></script>
+      <script src="../Frontend/exel.js" defer></script>
+      <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+</head>
+<body class="bg-gradient-to-br from-cor-primaria/10 to-cor-quaternaria/10 min-h-screen w-full font-['Roboto']">
+    <!-- Overlay para o menu mobile -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden"></div>
+    <!-- Header responsivo -->
+    <header class="bg-white shadow-lg w-full sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-row items-center justify-between py-3 px-4 relative">
+            <!-- Menu hambúrguer à esquerda (mobile) -->
+            <div class="relative">
+                <button id="menu-toggle" class="sm:hidden ml-0 mr-1 z-20" style="background: none; box-shadow: none;">
+                    <svg class="w-7 h-7 text-cor-primaria" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div id="mobile-menu" class="sm:hidden absolute left-0 top-10 z-50 bg-white rounded-xl shadow-xl p-3 flex flex-col gap-3 w-48 hidden">
+                    <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
+                    <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
+                    <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                </div>
+            </div>
+            <!-- Logo centralizada no mobile, à esquerda no desktop -->
+            <img src="../img/logo-azul.png" alt="Logo Azul"
+                class="h-10 sm:h-12 absolute left-1/2 -translate-x-1/2 sm:static sm:left-auto sm:translate-x-0 mx-auto sm:mx-0">
+            <!-- Botões (desktop) centralizados -->
+            <nav class="hidden sm:flex gap-4 justify-center flex-1">
+                <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
+                <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
+                <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+            </nav>
+            <!-- Avatar à direita -->
+            <div class="flex flex-row items-center gap-2 ml-auto">
+                <img src="../img/1.png" alt="Logo" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
+            </div>
+        </div>
+    </header>
+    <!-- Fim Header responsivo -->
+
+    <!-- Filtro no topo, sem espaço do topo -->
+    <div class="max-w-6xl mx-auto mt-4 rounded-xl border border-cor-primaria/10 bg-white/90 shadow-inner p-4 top-[64px] z-40">
+        <form id="form-filtro-ajuste" class="flex flex-wrap gap-4 items-end justify-center w-full">
+            <div>
+                <label class="block text-sm font-bold mb-1 text-cor-primaria" for="filtro-item">Item</label>
+                <input id="filtro-item" type="text" class="border border-cor-primaria/30 rounded-lg p-2 w-36 h-10 text-base focus:ring-2 focus:ring-cor-primaria" placeholder="Item">
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1 text-cor-primaria" for="filtro-tipo">Tipo</label>
+                <select id="filtro-tipo" class="border border-cor-primaria/30 rounded-lg p-2 w-36 h-10 text-base focus:ring-2 focus:ring-cor-primaria">
+                    <option value="">Todos</option>
+                    <option value="entrada">Entrada</option>
+                    <option value="retirada">Retirada</option>
+                </select>
+            </div>
+             <div>
+                <label class="block text-sm font-bold mb-1 text-cor-primaria" for="filtro-forma-pagamento">Pagamento</label>
+                <select id="filtro-forma-pagamento" class="border border-cor-primaria/30 rounded-lg p-2 w-40 h-10 text-base focus:ring-2 focus:ring-cor-primaria">
+                    <option value="">Todas</option>
+                    <option value="dinheiro">Dinheiro</option>
+                    <option value="pix">Pix</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-bold mb-1 text-cor-primaria" for="filtro-data">Data</label>
+                <input id="filtro-data" type="date" class="border border-cor-primaria/30 rounded-lg p-2 w-40 h-10 text-base focus:ring-2 focus:ring-cor-primaria">
+            </div>
+            <button type="submit" class="bg-cor-primaria text-white px-3 h-10 text-base rounded-lg font-bold hover:bg-cor-secundaria transition shadow">
+                 <img src="../img/filtrar.png" alt="Exportar Excel" class="h-6 w-6" />
+            </button>
+            <button type="button" id="limpar-filtro-ajuste" class="bg-cor-primaria text-white px-3 h-10 text-base rounded-lg font-bold hover:bg-cor-secundaria transition shadow">
+                 <img src="../img/limpar.png" alt="Exportar Excel" class="h-6 w-6" />
+            </button>
+        </form>
+    </div>
+     <!--fim  Filtro no topo, sem espaço do topo -->
+
+     <div class="w-full max-w-6xl mx-auto mt-4 bg-cor-no-escuro shadow-lg flex sm:flex-row flex-wrap justify-between gap-3 sm:gap-6 text-base sm:text-lg font-bold p-2 sm:p-4 rounded-t-xl">
+        <button id="btn-exportar-excel" class="bg-cor-primaria text-white px-2 h-10 text-base rounded-lg font-bold hover:bg-cor-secundaria transition shadow">
+            <img src="../img/exel.png" alt="Exportar Excel" class="h-6 w-6" />
+        </button>
+        <button id="modal-finalizar-ajuste" class="bg-cor-primaria text-white px-3 h-10 text-base rounded-lg font-bold hover:bg-cor-secundaria transition shadow">
+            Ajustar
+        </button>
+    </div>
+
+     <!-- Conteúdo da tabela principal -->
+   
+     
+       
+        <div class=" overflow-x-auto overflow-y-auto flex-1  shadow-inner max-w-6xl mx-auto w-full" style="max-height: 350px; min-height: 350px;">
+            <table class="min-w-full w-full mb-4" id="tabela-vendas-ajuste">
+                <thead>
+                    <tr>
+                        <th class="px-2 py-2 text-center bg-cor-no sticky top-0 z-10 text-cor-primaria font-bold text-sm">Item</th>
+                        <th class="px-2 py-2 text-center bg-cor-no sticky top-0 z-10 text-cor-primaria font-bold text-sm">Tipo</th>
+                        <th class="px-2 py-2 text-center bg-cor-no sticky top-0 z-10 text-cor-primaria font-bold text-sm">Pagamento</th>
+                        <th class="px-2 py-2 text-center bg-cor-no sticky top-0 z-10 text-cor-primaria font-bold text-sm">Valor</th>
+                        <th class="px-2 py-2 text-center bg-cor-no sticky top-0 z-10 text-cor-primaria font-bold text-sm">Data</th>
+                    </tr>
+                </thead>
+                <tbody class="space-y-2">
+                    <!-- Linhas serão preenchidas via JS -->
+                </tbody>
+            </table>
+        </div>
+        
+    <!-- Resumo do ajuste -->
+
+    <div class="w-full max-w-6xl mx-auto mt-2 mb-10 bg-white border border-cor-primaria/20 rounded-2xl shadow-lg flex  sm:flex-row flex-wrap justify-between gap-3 sm:gap-6 text-base sm:text-lg font-bold p-4 sm:p-8">
+        <div class="flex-1 min-w-[90px] flex flex-col items-center">
+            <span class="text-cor-primaria text-xs sm:text-base">Subtotal:</span>
+            <span id="subtotal-ajuste" class="text-green-600 text-base sm:text-xl">R$ 0,00</span>
+        </div>
+        <div class="flex-1 min-w-[90px] flex flex-col items-center">
+            <span class="text-cor-primaria text-xs sm:text-base">Valor Retirado:</span>
+            <span id="retirado-ajuste" class="text-red-500 text-base sm:text-xl">R$ 0,00</span>
+        </div>
+        <div class="flex-1 min-w-[90px] flex flex-col items-center">
+            <span class="text-cor-primaria text-xs sm:text-base">Total:</span>
+            <span id="total-ajuste" class="text-cor-secundaria text-base sm:text-xl">R$ 0,00</span>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmação de fechamento de caixa -->
+    <div id="modal-caixa-fechar-ajuste" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-lg p-6 max-w-xs w-full text-center">
+            <h2 class="text-lg font-bold mb-2 text-cor-primaria">Fechar caixa</h2>
+            <p class="mb-4 text-gray-700">Tem certeza que deseja concluir o ajuste semanal? Essa ação não poderá ser desfeita.</p>
+            <div class="flex justify-center gap-3">
+                <button id="finalizar-ajuste" class="w-28 bg-cor-primaria text-white px-4 py-2 rounded-lg font-bold hover:bg-cor-secundaria transition">Confirmar</button>
+                <button id="btn-cancelar-finalizar ajuste" class="w-28 bg-gray-200 text-gray-700 px-4 py-2 rounded-lg font-bold hover:bg-gray-300 transition">Voltar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

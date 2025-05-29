@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Vendas</title>
+    <!-- Fonte Roboto -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles/output.css">
+    <script src="../Frontend/script1.js" defer></script>
+</head>
+<body class="bg-gradient-to-br from-cor-primaria/10 to-cor-quaternaria/10 min-h-screen font-['Roboto']">
+    <!-- Overlay para o menu mobile -->
+    <div id="menu-overlay" class="fixed inset-0 bg-black bg-opacity-40 z-40 hidden"></div>
+    <!-- Header responsivo -->
+    <header class="bg-white shadow-lg w-full sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto flex flex-row items-center justify-between py-3 px-4 relative">
+            <!-- Menu hambúrguer à esquerda (mobile) -->
+            <div class="relative">
+                <button id="menu-toggle" class="sm:hidden ml-0 mr-1 z-20" style="background: none; box-shadow: none;">
+                    <svg class="w-7 h-7 text-cor-primaria" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
+                </button>
+                <div id="mobile-menu" class="sm:hidden absolute left-0 top-10 z-50 bg-white rounded-xl shadow-xl p-3 flex flex-col gap-3 w-48 hidden">
+                    <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
+                    <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
+                    <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                </div>
+            </div>
+            <!-- Logo centralizada no mobile, à esquerda no desktop -->
+            <img src="../img/logo-azul.png" alt="Logo Azul"
+                class="h-10 sm:h-12 absolute left-1/2 -translate-x-1/2 sm:static sm:left-auto sm:translate-x-0 mx-auto sm:mx-0">
+            <!-- Botões (desktop) centralizados -->
+            <nav class="hidden sm:flex gap-4 justify-center flex-1">
+                <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
+                <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
+                <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+            </nav>
+            <!-- Avatar à direita -->
+            <div class="flex flex-row items-center gap-2 ml-auto">
+                <img src="../img/1.png" alt="Logo" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
+            </div>
+        </div>
+    </header>
+    <!-- Fim Header responsivo -->
+
+    <!-- Filtro no topo -->
+    <div class="px-2 sm:px-4 ">
+        <div class="max-w-6xl mx-auto mt-4 rounded-2xl border border-cor-primaria/10 bg-white/90 shadow-inner p-4 top-[64px] ">
+            <form id="form-filtro-data" class="flex flex-wrap sm:flex-nowrap gap-4 items-end justify-between w-full">
+                <div class="w-full sm:w-auto">
+                    <label class="block text-sm font-bold mb-1 text-cor-primaria" for="filtro-data">Data</label>
+                    <input type="date" id="filtro-data" class="border border-cor-primaria/30 rounded-lg p-2 w-full sm:w-40 h-10 text-base focus:ring-2 focus:ring-cor-primaria"/>
+                </div>
+                <div class="flex gap-4 w-full sm:w-auto">
+                    <button type="submit" class="bg-cor-primaria text-white px-6 h-10 rounded-lg font-bold hover:bg-cor-secundaria shadow w-full sm:w-auto">Filtrar</button>
+                    <button type="button" id="limpar-filtro" class="bg-cor-quaternaria/10 text-cor-quaternaria px-6 h-10 rounded-lg font-bold hover:bg-cor-quaternaria/20 shadow w-full sm:w-auto">Limpar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- Conteúdo principal -->
+    <main class="w-full px-2 sm:px-4 py-2 sm:py-4 max-w-6xl mx-auto">
+        <div id="conteudo-modal-historico">
+            <section class="bg-white rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-2 gap-2">
+                    <h2 class="text-lg font-bold text-cor-primaria">Histórico Diário</h2>
+                </div>
+                <ul id="historico-diario" class="divide-y max-h-[70vh] overflow-y-auto px-6 py-6">
+                    <!-- Itens via JS -->
+                </ul>
+            </section>
+            <section class="bg-white rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
+                <div class="flex flex-col sm:flex-row items-center justify-between mb-2 gap-2">
+                    <h2 class="text-lg font-bold text-cor-primaria">Histórico Semanal</h2>
+                </div>
+                <ul id="historico-semanal" class="divide-y max-h-[70vh] overflow-y-auto px-6 py-6">
+                    <!-- Itens via JS -->
+                </ul>
+            </section>
+            <!-- Modal -->
+            <div id="modal-detalhes-historico" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+                <div class="bg-white rounded shadow-lg p-2 sm:p-6 w-full max-w-full sm:max-w-md mx-2 relative">
+                    <div id="detalhes-historico-conteudo"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

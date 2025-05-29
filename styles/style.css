@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cor-primaria: #15637b;
+  --cor-secundaria: #10546b;
+  --cor-terciaria: #0b445b;
+  --cor-quaternaria: #05354a;
+  --cor-escura: #00253a;
+}
+
+body {
+  background: var(--cor-primaria);
+  color: var(--cor-escura);
+  font-family: 'Roboto', Arial, Helvetica, sans-serif;
+}
+
+header,
+.bg-white {
+  background: #fff;
+}
+
+.text-blue-500,
+.text-blue-600,
+.text-blue-700 {
+  color: var(--cor-primaria) !important;
+}
+
+.bg-blue-500 {
+  background-color: var(--cor-primaria) !important;
+}
+
+.bg-blue-600 {
+  background-color: var(--cor-secundaria) !important;
+}
+
+.bg-blue-700 {
+  background-color: var(--cor-terciaria) !important;
+}
+
+.border-blue-500 {
+  border-color: var(--cor-primaria) !important;
+}
+
+.shadow {
+  box-shadow: 0 2px 8px 0 var(--cor-quaternaria, #05354a22);
+}
+
+button,
+a.bg-blue-500 {
+  background: var(--cor-primaria);
+  color: #fff;
+  
+}
+
+button:hover,
+a.bg-blue-500:hover {
+  background: var(--cor-secundaria);
+}
+
+a.bg-gray-100,
+.bg-gray-100 {
+  background: var(--cor-quaternaria);
+  color: #fff;
+}
+
+a.bg-gray-100:hover,
+.bg-gray-100:hover {
+  background: var(--cor-terciaria);
+}
+
+.text-green-600 {
+  color: #1abc9c !important;
+}
+
+.text-red-500 {
+  color: #e74c3c !important;
+}
+
+/* Ajuste para inputs e selects */
+input, select {
+  border-color: var(--cor-primaria);
+}
+
+input:focus, select:focus {
+  border-color: var(--cor-secundaria);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--cor-primaria, #15637b33);
+}
+
+body {
+           
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        /* Ajuste para ocupar toda a tela */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        #conteudo-modal-historico {
+            width: 100%;
+        }
+        /* Responsividade extra para mobile */
+        @media (max-width: 640px) {
+            .container {
+                padding-left: 0.5rem !important;
+                padding-right: 0.5rem !important;
+                width: 100vw !important;
+                max-width: 100vw !important;
+            }
+            main {
+                padding: 0.5rem !important;
+            }
+            section {
+                padding: 0.75rem !important;
+            }
+            #conteudo-modal-historico {
+                padding: 0 !important;
+            }
+        }
+        /* Ajuste para desktop */
+        @media (min-width: 641px) {
+            .container {
+                max-width: 900px;
+                width: 100%;
+            }
+            main {
+                padding: 2rem 0 !important;
+            }
+        }
