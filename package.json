@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css --watch",
-    "build": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css",
+    "dev": "npx tailwindcss -i ./styles/style.css -o ./Frontend/styles/output.css --watch",
+    "build": "npx tailwindcss -i ./styles/style.css -o ./Frontend/styles/output.css",
     "start": "node Backend/server.js",
     "postinstall": "npm run build"
   },
