@@ -56,6 +56,16 @@ db.serialize(() => {
         forma_pagamento TEXT
     )
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS usuarios (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT NOT NULL,
+      cpf TEXT NOT NULL UNIQUE,
+      tipo_conta TEXT NOT NULL,
+      senha TEXT NOT NULL
+    )
+  `);
 });
 
 module.exports = db;

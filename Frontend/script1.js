@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function carregarVendas() {
         if (!lista) return;
-        fetch('/api/vendas?data=' + dataHoje())
+        fetch(`http://localhost:3001/api/vendas?data=${dataHoje()}`)
             .then(res => res.json())
             .then(vendas => {
                 lista.innerHTML = '';
@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function buscarVendasPorData(data) {
-        return fetch('/api/vendas?data=' + data)
+        return fetch(`http://localhost:3001/api/vendas?data=${data}`)
             .then(res => res.json());
     }
 
     function buscarVendasHistoricoPorData(data) {
-        return fetch('/api/historico-vendas?data=' + data)
+        return fetch(`http://localhost:3001/api/historico-vendas?data=${data}`)
             .then(res => res.json());
     }
 
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ul = document.getElementById('historico-diario');
         if (!ul) return;
         ul.innerHTML = '';
-        const fechamentos = await fetch('/api/fechamentos').then(r => r.json());
+        const fechamentos = await fetch('http://localhost:3001/api/fechamentos').then(r => r.json());
         fechamentos.forEach((fechamento, idx) => {
             const dataFormatada = fechamento.data.split('-').reverse().join('/');
             ul.innerHTML += `
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const data = dataHoje();
             const forma_pagamento = form.forma_pagamento.value; 
 
-            fetch('/api/vendas', {
+            fetch('http://localhost:3001/api/vendas', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ item, valor, tipo, data, forma_pagamento }) 
@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             vendas.forEach(venda => {
                 total += venda.tipo === 'retirada' ? -venda.valor : venda.valor;
             });
-            const resp = await fetch('/api/fechamentos', {
+            const resp = await fetch('http://localhost:3001/api/fechamentos', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ data, total })
@@ -166,7 +166,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             // Apaga as vendas do dia no banco
-            await fetch('/api/vendas?data=' + data, {
+            await fetch(`http://localhost:3001/api/vendas?data=${data}`, {
                 method: 'DELETE'
             });
 
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
             // Busca fechamentos apenas para a data selecionada
-            const fechamentos = await fetch('/api/fechamentos').then(r => r.json());
+            const fechamentos = await fetch('http://localhost:3001/api/fechamentos').then(r => r.json());
             const fechamento = fechamentos.find(f => f.data === data);
             if (!fechamento) {
                 ul.innerHTML = '<li class="text-gray-400 text-center py-2" id="sem-historico">Nenhum registro encontrado.</li>';
@@ -287,7 +287,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!tbody) return;
 
         // Busca todas as vendas do histórico
-        let vendas = await fetch('/api/historico-vendas').then(r => r.json());
+        let vendas = await fetch('http://localhost:3001/api/historico-vendas').then(r => r.json());
 
         // Filtros
         if (filtros.item) {
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Função para finalizar ajuste semanal
     async function finalizarAjuste() {
-        let vendas = await fetch('/api/historico-vendas').then(r => r.json());
+        let vendas = await fetch('http://localhost:3001/api/historico-vendas').then(r => r.json());
         if (!vendas.length) {
             alert('Nenhum dado para salvar no ajuste.');
             return;
@@ -371,7 +371,7 @@ document.addEventListener('DOMContentLoaded', () => {
             total += venda.tipo === 'retirada' ? -venda.valor : venda.valor;
         });
 
-        const resp = await fetch('/api/fechamento-semanal', {
+        const resp = await fetch('http://localhost:3001/api/fechamento-semanal', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
             carregarTabelaAjuste();
 
             // Remove todos os fechamentos do banco
-            await fetch('/api/fechamentos', { method: 'DELETE' });
+            await fetch('http://localhost:3001/api/fechamentos', { method: 'DELETE' });
 
             // Limpa e atualiza o histórico diário (deixa em branco)
             if (document.getElementById('historico-diario')) {
@@ -407,7 +407,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const ul = document.getElementById('historico-semanal');
         if (!ul) return;
         ul.innerHTML = '';
-        const semanais = await fetch('/api/fechamento-semanal').then(r => r.json());
+        const semanais = await fetch('http://localhost:3001/api/fechamento-semanal').then(r => r.json());
         if (!semanais.length) {
             ul.innerHTML = '<li class="text-gray-400 text-center py-2" id="sem-historico-semanal">Nenhum fechamento semanal encontrado.</li>';
             return;
@@ -417,7 +417,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const dataFim = fechamento.data_fim.split('-').reverse().join('/');
 
             // Busca as vendas fechadas desse período para calcular o subtotal
-            let vendas = await fetch(`/api/vendas-fechadas?dataInicio=${fechamento.data_inicio}&dataFim=${fechamento.data_fim}`).then(r => r.json());
+            let vendas = await fetch(`http://localhost:3001/api/vendas-fechadas?dataInicio=${fechamento.data_inicio}&dataFim=${fechamento.data_fim}`).then(r => r.json());
             let subtotal = 0;
             vendas.forEach(venda => {
                 if (venda.tipo !== 'retirada') {
@@ -426,12 +426,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             ul.innerHTML += `
-                <li class="flex justify-between items-center py-2">
-                    <span>${dataInicio} - ${dataFim}</span>
-                    <span class="font-bold text-green-600">${subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
-                    <button class="text-blue-500 underline bg-transparent focus:outline-none" 
-                        data-inicio="${fechamento.data_inicio}" 
-                        data-fim="${fechamento.data_fim}">Ver detalhes</button>
+                <li class="py-2">
+                    <div class="grid grid-cols-3 items-center">
+                        <span class="text-left">${dataInicio} - ${dataFim}</span>
+                        <span class="font-bold text-green-600 text-center">${subtotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                        <button class="text-blue-500 underline bg-transparent focus:outline-none text-right"
+                            data-inicio="${fechamento.data_inicio}" 
+                            data-fim="${fechamento.data_fim}">Ver detalhes</button>
+                    </div>
                 </li>
             `;
         }
@@ -441,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
             btn.addEventListener('click', async () => {
                 const dataInicio = btn.getAttribute('data-inicio');
                 const dataFim = btn.getAttribute('data-fim');
-                let vendas = await fetch(`/api/vendas-fechadas?dataInicio=${dataInicio}&dataFim=${dataFim}`).then(r => r.json());
+                let vendas = await fetch(`http://localhost:3001/api/vendas-fechadas?dataInicio=${dataInicio}&dataFim=${dataFim}`).then(r => r.json());
 
                 // Calcula subtotal, retirado e total
                 let subtotal = 0;
@@ -534,7 +536,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Abrir modal de ajuste ao clicar no botão "Ajustar"
     const btnModalFinalizarAjuste = document.getElementById('modal-finalizar-ajuste');
     const modalCaixaFecharAjuste = document.getElementById('modal-caixa-fechar-ajuste');
-    const btnCancelarFinalizarAjuste = document.getElementById('btn-cancelar-finalizar ajuste');
+    const btnCancelarFinalizarAjuste = document.getElementById('btn-cancelar-finalizar-ajuste'); // Corrigido aqui!
 
     if (btnModalFinalizarAjuste && modalCaixaFecharAjuste) {
         btnModalFinalizarAjuste.addEventListener('click', () => {
@@ -555,5 +557,284 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const btnLucroVendedor = document.getElementById('btn-lucro-vendedor');
+    const modalLucroVendedor = document.getElementById('modal-lucro-vendedor');
+    const valorLucroVendedor = document.getElementById('valor-lucro-vendedor');
+    const btnFecharLucroVendedor = document.getElementById('btn-fechar-lucro-vendedor');
+    const subtotalSpan = document.getElementById('subtotal-ajuste');
+
+    function atualizarLucroVendedor() {
+        // Pega o subtotal atual da tela
+        let subtotal = 0;
+        if (subtotalSpan) {
+            // Remove "R$" e "." e troca "," por "."
+            subtotal = parseFloat(subtotalSpan.textContent.replace(/[^\d,]/g, '').replace('.', '').replace(',', '.')) || 0;
+        }
+        const lucro = subtotal * 0.10;
+        if (valorLucroVendedor) {
+            valorLucroVendedor.textContent = lucro.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+    }
+
+    if (btnLucroVendedor && modalLucroVendedor) {
+        btnLucroVendedor.addEventListener('click', () => {
+            atualizarLucroVendedor();
+            modalLucroVendedor.classList.remove('hidden');
+        });
+    }
+
+    if (btnFecharLucroVendedor && modalLucroVendedor) {
+        btnFecharLucroVendedor.addEventListener('click', () => {
+            modalLucroVendedor.classList.add('hidden');
+        });
+    }
+
+    // Atualiza o valor do lucro sempre que o subtotal mudar
+    const observer = new MutationObserver(atualizarLucroVendedor);
+    if (subtotalSpan) {
+        observer.observe(subtotalSpan, { childList: true });
+    }
+
+    // Mostrar/ocultar filtro no mobile
+    const btnFiltroMobile = document.getElementById('btn-filtro-mobile');
+    const containerFiltroAjuste = document.getElementById('container-filtro-ajuste');
+
+    function ajustarFiltroAjusteVisibilidade() {
+        if (window.innerWidth >= 640) { // sm: breakpoint Tailwind
+            containerFiltroAjuste.classList.remove('hidden');
+        } else {
+            containerFiltroAjuste.classList.add('hidden');
+        }
+    }
+
+    if (btnFiltroMobile && containerFiltroAjuste) {
+        btnFiltroMobile.addEventListener('click', () => {
+            containerFiltroAjuste.classList.toggle('hidden');
+        });
+        window.addEventListener('resize', ajustarFiltroAjusteVisibilidade);
+        ajustarFiltroAjusteVisibilidade();
+    }
+
+    const btnCancelarVenda = document.getElementById('btn-cancelar-venda');
+    if (btnCancelarVenda && formVenda && btnAdicionar) {
+        btnCancelarVenda.addEventListener('click', function () {
+            formVenda.classList.add('hidden');
+            btnAdicionar.classList.remove('hidden');
+        });
+    }
+
+    const formCadastroUsuario = document.getElementById('form-cadastro-usuario');
+    if (formCadastroUsuario) {
+        formCadastroUsuario.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const nome = document.getElementById('nome').value;
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, ''); // <-- Adicione isso!
+            const tipo_conta = document.getElementById('tipo-conta').value;
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmar-senha').value;
+
+            if (senha !== confirmarSenha) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+
+            const res = await fetch('http://localhost:3001/api/usuarios', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome, cpf, tipo_conta, senha })
+            });
+
+            const data = await res.json();
+            if (res.ok) {
+                alert('Usuário cadastrado com sucesso!');
+                document.getElementById('form-cadastro-usuario').reset();
+            } else {
+                alert(data.error || 'Erro ao cadastrar usuário.');
+            }
+        });
+    }
+
+    document.getElementById('toggleSenha').addEventListener('click', function() {
+        const input = document.getElementById('senha');
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+    document.getElementById('toggleConfirmarSenha').addEventListener('click', function() {
+        const input = document.getElementById('confirmar-senha');
+        if (input.type === 'password') {
+            input.type = 'text';
+            this.textContent = '🙈';
+        } else {
+            input.type = 'password';
+            this.textContent = '👁️';
+        }
+    });
+
+    // MODAL DE USUÁRIOS
+    const btnVerUsuarios = document.getElementById('btn-ver-usuarios');
+    const modalUsuarios = document.getElementById('modal-usuarios');
+    const fecharModalUsuarios = document.getElementById('fechar-modal-usuarios');
+    const listaUsuarios = document.getElementById('lista-usuarios');
+
+    if (btnVerUsuarios && modalUsuarios && fecharModalUsuarios && listaUsuarios) {
+        btnVerUsuarios.addEventListener('click', async () => {
+            modalUsuarios.classList.remove('hidden');
+            listaUsuarios.innerHTML = '<p class="text-gray-400 text-center">Carregando...</p>';
+            try {
+                const res = await fetch('http://localhost:3001/api/usuarios');
+                const usuarios = await res.json();
+                if (usuarios.length === 0) {
+                    listaUsuarios.innerHTML = '<p class="text-gray-400 text-center">Nenhum usuário cadastrado.</p>';
+                } else {
+                    listaUsuarios.innerHTML = `
+    <table class="w-full text-sm">
+        <thead>
+            <tr>
+                <th class="text-center">Nome</th>
+                <th class="text-center">CPF</th>
+                <th class="text-center">Tipo de Conta</th>
+                <th class="text-center">Senha</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            ${usuarios.map(u => `
+                <tr>
+                    <td class="text-center">${u.nome}</td>
+                    <td class="text-center">${u.cpf}</td>
+                    <td class="text-center">${u.tipo_conta}</td>
+                    <td class="text-center">${u.senha}</td>
+                    <td class="text-center">
+                        <button class="btn-excluir-usuario bg-red-500 text-white px-2 py-1 rounded text-xs" data-cpf="${u.cpf}">Excluir</button>
+                    </td>
+                </tr>
+            `).join('')}
+        </tbody>
+    </table>
+`;
+
+                    // ADICIONE ESTE BLOCO LOGO APÓS ATUALIZAR O innerHTML:
+                    listaUsuarios.querySelectorAll('.btn-excluir-usuario').forEach(btn => {
+                        btn.addEventListener('click', async function() {
+                            if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+                            const cpf = this.getAttribute('data-cpf');
+                            const res = await fetch(`http://localhost:3001/api/usuarios/${cpf}`, {
+                                method: 'DELETE'
+                            });
+                            if (res.ok) {
+                                this.closest('tr').remove();
+                            } else {
+                                alert('Erro ao excluir usuário.');
+                            }
+                        });
+                    });
+                }
+            } catch {
+                listaUsuarios.innerHTML = '<p class="text-red-500 text-center">Erro ao carregar usuários.</p>';
+            }
+        });
+
+        fecharModalUsuarios.addEventListener('click', () => {
+            modalUsuarios.classList.add('hidden');
+        });
+
+        // Fecha ao clicar fora do conteúdo
+        modalUsuarios.addEventListener('click', (e) => {
+            if (e.target === modalUsuarios) {
+                modalUsuarios.classList.add('hidden');
+            }
+        });
+    }
+
+    // Excluir usuário
+    listaUsuarios.querySelectorAll('.btn-excluir-usuario').forEach(btn => {
+        btn.addEventListener('click', async function() {
+            if (!confirm('Tem certeza que deseja excluir este usuário?')) return;
+            const cpf = this.getAttribute('data-cpf');
+            const res = await fetch(`http://localhost:3001/api/usuarios/${cpf}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                // Atualiza a lista após exclusão
+                this.closest('tr').remove();
+            } else {
+                alert('Erro ao excluir usuário.');
+            }
+        });
+    });
+
+    // Exibe o nome do usuário logado no header
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+    console.log('Usuário logado:', usuario);
+    if (usuario && usuario.nome) {
+        const spanNome = document.querySelector('#nome-usuario-logado span');
+        if (spanNome) spanNome.textContent = usuario.nome;
+    }
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const imgUsuario = document.getElementById('img-usuario-logado');
+    const modal = document.getElementById('modal-usuario-logado');
+    const fechar = document.getElementById('fechar-modal-usuario-logado');
+    const info = document.getElementById('info-usuario-logado');
+    const btnLogout = document.getElementById('btn-logout');
+
+    if (imgUsuario && modal && fechar && info && btnLogout) {
+        imgUsuario.addEventListener('click', () => {
+            const usuario = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+            info.innerHTML = `
+                <div><strong>Nome:</strong> ${usuario.nome || '-'}</div>
+                <div><strong>CPF:</strong> ${usuario.cpf || '-'}</div>
+                <div><strong>Tipo de conta:</strong> ${usuario.tipo_conta || '-'}</div>
+            `;
+            modal.classList.remove('hidden');
+        });
+        fechar.addEventListener('click', () => modal.classList.add('hidden'));
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) modal.classList.add('hidden');
+        });
+        btnLogout.addEventListener('click', () => {
+            localStorage.removeItem('usuarioLogado');
+            window.location.href = 'login.html';
+        });
+    }
+
+    // OCULTAR FORMULÁRIO DE VENDA E BOTÃO FECHAR CAIXA PARA USUÁRIO COMUM
+    const usuario = JSON.parse(localStorage.getItem('usuarioLogado') || '{}');
+    if (usuario && usuario.tipo_conta === 'usuario') {
+        const secaoVenda = document.getElementById('secao-venda');
+        if (secaoVenda) {
+            secaoVenda.style.display = 'none';
+        }
+        const btnCaixa1 = document.getElementById('btn-caixa1');
+        if (btnCaixa1) {
+            btnCaixa1.style.display = 'none';
+        }
+    }
+
+    // OCULTAR LINKS DE CADASTRO PARA USUÁRIO COMUM
+    if (usuario && (usuario.tipo_conta === 'usuario' || usuario.tipo_conta === 'operador')) {
+        // Oculta todos os links para cadastro.html
+        document.querySelectorAll('a[href="cadastro.html"]').forEach(link => {
+            link.style.display = 'none';
+        });
+    }
+
+    if (usuario && usuario.tipo_conta === 'usuario') {
+        // Oculta o botão de ajuste semanal
+        const btnAjuste = document.getElementById('modal-finalizar-ajuste');
+        if (btnAjuste) {
+            btnAjuste.style.display = 'none';
+        }
+    }
+});
+
 

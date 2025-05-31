@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Controle de Vendas</title>
+    <title>Kontrolla</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="../styles/output.css">
-    <script src="/script1.js" defer></script>
+     <link rel="stylesheet" href="/styles/output.css">
+    <script src="script1.js" defer></script>
+     <script src="auth.js" defer></script>
+     <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
+
 </head>
 <body class="bg-gradient-to-br from-cor-primaria/10 to-cor-quaternaria/10 min-h-screen w-full font-['Roboto']">
     <!-- Header responsivo -->
@@ -20,20 +23,22 @@
                     </svg>
                 </button>
                 <div id="mobile-menu" class="sm:hidden absolute left-0 top-10 z-50 bg-white rounded-xl shadow-xl p-3 flex flex-col gap-3 w-48 hidden">
+                  <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
                     <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
                     <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
-                    <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                    <a href="cadastro.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Cadastro</a>
                 </div>
             </div>
-            <img src="/img/logo-azul.png" alt="Logo Azul"
+            <img src="img/logo-azul.png" alt="Logo Azul"
                 class="h-10 sm:h-12 absolute left-1/2 -translate-x-1/2 sm:static sm:left-auto sm:translate-x-0 mx-auto sm:mx-0">
             <nav class="hidden sm:flex gap-4 justify-center flex-1">
+                 <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
                 <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
                 <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
-                <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                <a href="cadastro.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Cadastro</a>
             </nav>
             <div class="flex flex-row items-center gap-2 ml-auto">
-                <img src="/img/1.png" alt="Logo" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
+                <img src="img/1.png" id="img-usuario-logado" alt="Logo" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
             </div>
         </div>
     </header>
@@ -47,7 +52,7 @@
             </div>
         </div>
         <!-- Formulário de venda/retirada -->
-        <section class="bg-white/90 rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
+        <section id="secao-venda" class="bg-white/90 rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
             <!-- Botão só aparece no mobile -->
             <button id="btn-adicionar-venda" type="button"
                 class="block sm:hidden bg-cor-primaria text-white rounded-lg font-bold hover:bg-cor-secundaria transition w-full h-10 px-2 py-2 text-base shadow">
@@ -80,6 +85,13 @@
                     <label class="block text-xs font-bold mb-1 invisible">Salvar</label>
                     <button type="submit" class="bg-cor-primaria text-white rounded-lg font-bold hover:bg-cor-secundaria transition w-full h-10 px-2 py-2 text-base shadow">Salvar</button>
                 </div>
+                <div class="flex flex-col w-full sm:w-40 sm:hidden">
+                    <label class="block text-xs font-bold invisible">Cancelar</label>
+                    <button type="button" id="btn-cancelar-venda"
+        class="block bg-gray-200 text-cor-primaria rounded-lg font-bold hover:bg-gray-300 transition w-full h-10 px-2 py-2 text-base shadow">
+        Cancelar
+    </button>
+                </div>
             </form>
         </section>
         <!-- Fim Formulário de venda/retirada -->
@@ -88,9 +100,11 @@
         <section class="bg-white/90 rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
             <div class="flex items-center justify-between mb-2 sticky top-0  z-10 px-6" style="padding-top: 4px;">
                 <h2 class="text-base font-bold text-cor-primaria">Últimos registros do dia</h2>
-                <button id="btn-caixa1" class="px-4 py-2 rounded-lg font-bold transition text-white text-base bg-gradient-to-r from-cor-primaria to-cor-secundaria shadow hover:from-cor-secundaria hover:to-cor-terciaria">
-                    Fechar caixa
-                </button>
+                <button id="btn-caixa1"
+    class="px-2 py-1 text-sm rounded-lg font-bold transition text-white bg-gradient-to-r from-cor-primaria to-cor-secundaria  hover:from-cor-secundaria hover:to-cor-terciaria
+           sm:px-4 sm:py-2 sm:text-base">
+    Fechar caixa
+</button>
             </div>
             <ul id="lista-vendas-dia" class="divide-y h-80 overflow-y-auto px-6 py-6">
                 <!-- Itens serão inseridos via JS -->
@@ -113,5 +127,15 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal do usuário logado -->
+<div id="modal-usuario-logado" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 max-w-xs w-full text-center relative">
+        <button id="fechar-modal-usuario-logado" class="absolute top-2 right-2 text-gray-400 text-2xl font-bold rounded-full w-6 h-6 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition" aria-label="Fechar modal" type="button">&times;</button>
+        <h2 class="text-lg font-bold mb-2 text-cor-primaria">Usuário</h2>
+        <div id="info-usuario-logado" class="mb-4 text-gray-700"></div>
+        <button id="btn-logout" class="mt-2 w-full bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition h-10 px-2 py-2 text-base ">Sair</button>
+    </div>
+</div>
 </body>
 </html>

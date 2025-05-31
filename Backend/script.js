@@ -103,6 +103,16 @@ function listarFechamentosSemanais(callback) {
   );
 }
 
+function inserirUsuario(nome, cpf, tipo_conta, senha, callback) {
+  db.run(
+    'INSERT INTO usuarios (nome, cpf, tipo_conta, senha) VALUES (?, ?, ?, ?)',
+    [nome, cpf, tipo_conta, senha],
+    function (err) {
+      callback(err, this?.lastID);
+    }
+  );
+}
+
 module.exports = {
   inserirVenda,
   listarVendasPorData,
@@ -111,4 +121,5 @@ module.exports = {
   copiarVendasParaHistorico,
   inserirFechamentoSemanal,
   listarFechamentosSemanais,
+  inserirUsuario,
 };

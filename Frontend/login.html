@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistema de Controle de Vendas</title>
+    <title>Login - Kontrolla</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-     <link rel="stylesheet" href="../styles/output.css">
-    <script src="/script1.js" defer></script>
+     <link rel="stylesheet" href="/styles/output.css">
+    <script src="login.js" defer></script>
+     <link rel="shortcut icon" href="/img/logo.ico" type="image/x-icon">
 </head>
 <body class="bg-gradient-to-br from-blue-100 to-blue-200 min-h-screen flex items-center justify-center font-['Roboto']">
     <div class="bg-white rounded-3xl shadow-2xl flex flex-col md:flex-row w-full max-w-md md:max-w-4xl overflow-hidden min-h-screen md:min-h-0">
@@ -21,12 +22,12 @@
 
         <!-- Lado direito: Login -->
         <div class="flex flex-col justify-center items-center p-8 md:p-10 w-full md:w-1/2 bg-white">
-            <img src="../img/logo-azul.png" alt="Logo" class="h-10 md:h-12 mb-4">
+            <img src="img/logo-azul.png" alt="Logo" class="h-10 md:h-12 mb-4">
             <h1 class="text-xl md:text-2xl font-bold text-blue-500 mb-2">Login</h1>
             <form id="form-login" class="w-full flex flex-col gap-4">
                 <div>
-                    <label for="usuario" class="block text-xs font-bold mb-1 text-blue-500">Usuário</label>
-                    <input id="usuario" name="usuario" type="text" required class="border border-blue-300 rounded-lg w-full h-10 px-2 py-2 text-base focus:ring-2 focus:ring-blue-500" placeholder="Digite seu usuário">
+                    <label for="usuario" class="block text-xs font-bold mb-1 text-blue-500">CPF</label>
+                    <input id="usuario" name="usuario" type="text" required class="border border-blue-300 rounded-lg w-full h-10 px-2 py-2 text-base focus:ring-2 focus:ring-blue-500" placeholder="Digite seu CPF (somente números)">
                 </div>
                 <div>
                     <label for="senha" class="block text-xs font-bold mb-1 text-blue-500">Senha</label>
@@ -36,8 +37,9 @@
                             👁️
                         </button>
                     </div>
+                    <p id="erro-login" class="text-red-500 text-xs mt-1 hidden text-center font-bold">CPF ou Senha inválidos </p>
                 </div>
-                <a href="#" class="text-xs text-blue-400 hover:underline mb-2 text-right"></a>
+                <a href="index.html" class="text-xs text-blue-400 hover:underline mb-2 text-right"></a>
                 <button type="submit" class="bg-blue-500 text-white rounded-lg font-bold hover:bg-blue-600 transition w-full h-10 px-2 py-2 text-base shadow">Login</button>
                 <div class="flex items-center my-2">
                     <span class="flex-grow border-t border-gray-200"></span>
@@ -45,9 +47,21 @@
                     <span class="flex-grow border-t border-gray-200"></span>
                 </div>
                 <div class="flex gap-2 justify-center">
-                    <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-gray-100"><img src="../img/github.png" alt="GitHub" class="h-5 w-5"></button>
-                    <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-gray-100"><img src="../img/gmail.png" alt="Gmail" class="h-5 w-5"></button>
-                    <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-gray-100"><img src="../img/instagram.png" alt="Instagram" class="h-5 w-5"></button>
+                    <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+                        <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-cor-secundaria">
+                            <img src="img/github.png" alt="GitHub" class="h-5 w-5">
+                        </button>
+                    </a>
+                    <a href="mailto:isaleoguimaraes284@gmail.com">
+                        <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-cor-secundaria">
+                            <img src="img/gmail.png" alt="Gmail" class="h-5 w-5">
+                        </button>
+                    </a>
+                    <a href="https://www.instagram.com/zzaleog?igsh=eGg1ZzJxcno2enQz&utm_source=qr" target="_blank" rel="noopener noreferrer">
+                        <button type="button" class="border border-gray-300 rounded-lg p-2 hover:bg-cor-secundaria">
+                            <img src="img/instagram.png" alt="Instagram" class="h-5 w-5">
+                        </button>
+                    </a>
                 </div>
             </form>
         </div>

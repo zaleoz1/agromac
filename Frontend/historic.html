@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Vendas</title>
+    <title>Kontrolla</title>
     <!-- Fonte Roboto -->
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/output.css">
-    <script src="/script1.js" defer></script>
+    <link rel="stylesheet" href="/styles/output.css">
+    <script src="script1.js" defer></script>
+     <script src="auth.js" defer></script>
+     <link rel="shortcut icon" href="img/logo.ico" type="image/x-icon">
 </head>
 <body class="bg-gradient-to-br from-cor-primaria/10 to-cor-quaternaria/10 min-h-screen font-['Roboto']">
     <!-- Overlay para o menu mobile -->
@@ -23,23 +25,25 @@
                     </svg>
                 </button>
                 <div id="mobile-menu" class="sm:hidden absolute left-0 top-10 z-50 bg-white rounded-xl shadow-xl p-3 flex flex-col gap-3 w-48 hidden">
+                    <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
                     <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
                     <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
-                    <a href="index.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                    <a href="cadastro.html" class="text-cor-primaria px-4 py-2 rounded font-bold text-base transition hover:bg-cor-primaria/10">Cadastro</a>
                 </div>
             </div>
             <!-- Logo centralizada no mobile, à esquerda no desktop -->
-            <img src="../img/logo-azul.png" alt="Logo Azul"
+            <img src="img/logo-azul.png" alt="Logo Azul"
                 class="h-10 sm:h-12 absolute left-1/2 -translate-x-1/2 sm:static sm:left-auto sm:translate-x-0 mx-auto sm:mx-0">
             <!-- Botões (desktop) centralizados -->
             <nav class="hidden sm:flex gap-4 justify-center flex-1">
+                <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
                 <a href="historic.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Histórico</a>
                 <a href="ajuste.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Ajuste</a>
-                <a href="index.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Início</a>
+                <a href="cadastro.html" class="text-cor-primaria px-4 py-2 rounded-lg font-bold text-base transition hover:bg-cor-primaria/10">Cadastro</a>
             </nav>
             <!-- Avatar à direita -->
             <div class="flex flex-row items-center gap-2 ml-auto">
-                <img src="../img/1.png" alt="Logo" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
+                <img src="img/1.png" alt="Logo" id="img-usuario-logado" class="w-10 h-10 sm:w-14 sm:h-14 rounded-full border-2 border-cor-primaria/30 shadow-md transition hover:scale-105">
             </div>
         </div>
     </header>
@@ -63,29 +67,38 @@
     <!-- Conteúdo principal -->
     <main class="w-full px-2 sm:px-4 py-2 sm:py-4 max-w-6xl mx-auto">
         <div id="conteudo-modal-historico">
-            <section class="bg-white rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
+            <section class="bg-white rounded border border-cor-primaria/10 shadow-inner p-4 mb-2">
                 <div class="flex flex-col sm:flex-row items-center justify-between mb-2 gap-2">
                     <h2 class="text-lg font-bold text-cor-primaria">Histórico Diário</h2>
                 </div>
-                <ul id="historico-diario" class="divide-y max-h-[70vh] overflow-y-auto px-6 py-6">
+                <ul id="historico-diario" class="divide-y max-h-[60vh] overflow-y-auto px-2 py-2 sm:px-6 sm:py-6 text-xs sm:text-base">
                     <!-- Itens via JS -->
                 </ul>
             </section>
-            <section class="bg-white rounded-2xl border border-cor-primaria/10 shadow-inner p-4 mb-4">
+            <section class="bg-white rounded border border-cor-primaria/10 shadow-inner p-2 sm:p-4">
                 <div class="flex flex-col sm:flex-row items-center justify-between mb-2 gap-2">
-                    <h2 class="text-lg font-bold text-cor-primaria">Histórico Semanal</h2>
+                    <h2 class="text-base sm:text-lg font-bold text-cor-primaria">Histórico Semanal</h2>
                 </div>
-                <ul id="historico-semanal" class="divide-y max-h-[70vh] overflow-y-auto px-6 py-6">
+                <ul id="historico-semanal" class="divide-y max-h-[60vh] overflow-y-auto px-2 py-2 sm:px-6 sm:py-6 text-xs sm:text-base">
                     <!-- Itens via JS -->
                 </ul>
             </section>
             <!-- Modal -->
             <div id="modal-detalhes-historico" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-                <div class="bg-white rounded shadow-lg p-2 sm:p-6 w-full max-w-full sm:max-w-md mx-2 relative">
+                <div class="bg-white rounded-2xl shadow-2xl p-4 sm:p-8 w-full max-w-full sm:max-w-xl mx-2 relative border-2 border-cor-primaria/20">
                     <div id="detalhes-historico-conteudo"></div>
                 </div>
             </div>
         </div>
     </main>
+       <!-- Modal do usuário logado -->
+<div id="modal-usuario-logado" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-6 max-w-xs w-full text-center relative">
+        <button id="fechar-modal-usuario-logado" class="absolute top-2 right-2 text-gray-400 text-2xl font-bold rounded-full w-6 h-6 flex items-center justify-center focus:outline-none hover:bg-gray-200 transition" aria-label="Fechar modal" type="button">&times;</button>
+        <h2 class="text-lg font-bold mb-2 text-cor-primaria">Usuário</h2>
+        <div id="info-usuario-logado" class="mb-4 text-gray-700"></div>
+        <button id="btn-logout" class="mt-2 w-full bg-red-500 text-white rounded-lg font-bold hover:bg-red-600 transition h-10 px-2 py-2 text-base ">Sair</button>
+    </div>
+</div>
 </body>
 </html>
